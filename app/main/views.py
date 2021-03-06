@@ -4,7 +4,7 @@ from ..models import Blogs,Role,User,Comments
 from .. import db,photos
 from . import main
 from ..email import mail_message
-from .forms import BlogForm,CommentForm,UpdateProfile
+from .forms import BlogsForm,CommentForm,UpdateProfile
 
 @main.route('/blog/', methods = ['GET','POST'])
 @login_required

@@ -7,10 +7,11 @@
 {% endblock %}
 
 {% block content %}
-<div class="jumbotron" style="margin-top:0; background-color: grey;">
-  <h2 class="text-center" >PITCH WITH US;</h2>
-  <p class="text-center"> Have 60 seconds to impress someone and make something great.!!!</p>
-</div> 
+<div class="jumbotron" style="margin-top:0; background-color:aliceblue; font-size: 30px; font-family: 'Merienda', cursive;  padding-top: 40px; text-align: center;">
+  <h2 class="text-center" >BLOGS!;</h2>
+  <h4 class="text-center"> Welcome to Vibrant Blogs,
+     We make your dreams come through by allowing you to write your Blog</h4>
+  </div> 
 
 <body >
 
@@ -18,41 +19,21 @@
       <div class="col-sm" >
         <div class=" card col-sm mt-2">
           <div class="well well-lg p-3" id="card" style="text-align: center;">
-              <h3>Product Pitch</h3>
+              <h3>Blog</h3>
               <hr>
-              <p>Any product that needs a manual to work is broken.</p> </p>
-              <button type="button" class="btn btn-outline-primary"><a href="../pitch/">Enter a New Pitch</a></button><br><br>
-              <button type="button" class="btn btn-outline-primary"><a href="/categories/Product">Read More</a></button>
+              
+              <button type="button" class="btn btn-outline-primary"><a href="../blog/">Enter a New Blog</a></button><br><br>
+              <button type="button" class="btn btn-outline-primary"><a href="{{url_for('main.category')}}">Read More</a></button>
           </div>
       </div>
       </div>
-      <div class="col-sm">
-        <div class=" card col-sm mt-2">
-          <div class="well well-lg p-3" id="card" style="text-align: center;">
-              <h3>Adverting Pitch</h3>
-              <hr>
-              <p>“The difference between the almost right word and the right word is the difference between the lightning bug and the lightning.” </p> </p>
-              <button type="button" class="btn btn-outline-primary"><a href="../pitch/">Enter a New Pitch</a></button><br><br>
-              <button type="button" class="btn btn-outline-primary"><a href="/categories/Adverts">Read More</a></button>
-          </div>
-      </div>
-      </div>
-
-      <div class="col-sm">
-        <div class=" card col-sm mt-2">
-          <div class="well well-lg p-3" id="card" style="text-align: center;">
-              <h3>Iterview Pitches</h3>
-              <hr>
-              <p>“It’s not whether you get knocked down. It’s whether you get up.”</p> </p>
-              <button type="button" class="btn btn-outline-primary"><a href="../pitch/">Enter a New Pitch</a></button><br><br>
-              <button type="button" class="btn btn-outline-primary"><a href="/categories/Iterview">Read More</a></button>
-          </div>
-      </div>
-      </div>
-
-
+      <div style="font-size: 30px; font-family: 'Merienda', cursive;  padding-top: 40px; text-align: center;">
+        {% for quote in getquotes %}
+        <p>{{quote.quote}}</p>
+        <p class="text-primary"> By: {{quote.author}}</p>
+        {% endfor %}
+    
     </div>
-  
        
   </body>
     <br><br>

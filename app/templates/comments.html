@@ -17,25 +17,17 @@
             
               <h4 class="card-title">{{comm.author}}</h4>
               <p class="card-text">{{comm.comment}}.</p>
+              
               <div class="card-footer bg-transparent border-success">
                 <small
                   >Publish date:{{comm.date_posted.strftime('%Y-%m-%d')}}</small
                 >
+                
               </div>
-              
+              <a href="{{url_for( 'main.deleteComment', id= comm.id)}}"><button>delete</button></a>
             </div>
             <br>
-            <div style="text-align: center;">
-              <button class="social-like" >
-                <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i></span>
-                <span class="count" >0</span>
-            </button>
-               &nbsp;
-            <button class="social-dislike" >
-                <span class="dislike" >0</span>
-                <span class="like"><i class="glyphicon glyphicon-thumbs-down"></i></span>
-           </button>
-          </div>
+            
           </div>
           
         

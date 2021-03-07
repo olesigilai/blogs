@@ -27,8 +27,8 @@ class Blogs(db.Model):
         db.session.commit()
 
     @classmethod
-    def get_blogs(cls,cate):
-        blog = Blogs.query.filter_by(category=cate).all()
+    def get_blogs(cls):
+        blog = Blogs.query.all()
         return blog
 
 
@@ -45,9 +45,10 @@ class User(UserMixin,db.Model):
     role_id = db.Column(db.Integer,db.ForeignKey('roles.id'))
     bio = db.Column(db.String(255))
     profile_pic_path = db.Column(db.String())
-    pitch = db.relationship('Blogs', backref='author', lazy='dynamic')
+    blog = db.relationship('Blogs', backref='author',passive_deletes=True, lazy='dynamic')
     pass_secure = db.Column(db.String(255))
-    
+    comment = db.relationship('Comments',backref = 'author',passive_deletes=True,lazy='dynamic')
+
     @property
     def password(self):
         raise AttributeError('You cannot read the password attribute')
@@ -63,6 +64,12 @@ class User(UserMixin,db.Model):
 
     def __repr__(self):
         return f'User {self.author}'
+
+class Quote:
+    def __init__(self,id,author,quote):
+        self.id =id
+        self.author = author
+        self.quote = quote
 
 
 class Role(db.Model):
@@ -92,6 +99,10 @@ class Comments(db.Model):
     def get_comment(cls,id):
         comments = Comments.query.filter_by(blogs_id=id).all()
         return comments
+
+    def deleteComment(self):
+        db.session.delete(self)
+        db.session.commit()
 
     def __repr__(self):
         return f"Comments('{self.comment}', '{self.date_posted}')"

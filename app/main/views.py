@@ -1,24 +1,26 @@
 from flask_login import login_required, current_user
-from flask import render_template,request,redirect,url_for, abort
+from flask import render_template,request,redirect,url_for, abort,flash
 from ..models import Blogs,Role,User,Comments
 from .. import db,photos
 from . import main
 from ..email import mail_message
 from .forms import BlogsForm,CommentForm,UpdateProfile
+from ..requests import getQuotes
 
 @main.route('/blog/', methods = ['GET','POST'])
 @login_required
 def new_blog():
 
-    form = BlogForm()
+    form = BlogsForm()
 
     if form.validate_on_submit():
         category = form.category.data
+        # print("category")
         blog= form.blog.data
         title=form.title.data
 
         
-        new_pitch = Pitches(title=title,category= category,pitch= pitch,user_id=current_user.id)
+        new_blog = Blogs(title=title,category= category,blog= blog,user_id=current_user.id)
 
         title='New Blog'
 
@@ -28,28 +30,29 @@ def new_blog():
 
     return render_template('blog.html',form= form)
 
-@main.route('/')
+@main.route('/',methods=['GET'])
 def index():
-    '''
-    Index page
-    return
-    '''
+
+    getquotes = getQuotes()
     message= "Welcome to Blog Website!!"
     title= 'Blog-web!'
-    return render_template('index.html', message=message,title=title)
+    return render_template('index.html',getquotes = getquotes,message=message,title=title)
 
 
-@main.route('/categories/<cate>')
+@main.route('/categories')
 @login_required
-def category(cate):
+def category():
     '''
     function to return the blogs by category
     '''
-    category = Blogs.get_blogs(cate)
+    category = Blogs.get_blogs()
+  
     
 
-    title = f'{cate}'
+    title = category
     return render_template('categories.html',title = title, category = category)
+
+    
 
 @main.route('/user/<uname>')
 def profile(uname):
@@ -97,23 +100,43 @@ def comment(id):
     function to return the comments
     '''
     comm =Comments.get_comment(id)
-    print(comm)
+   
     title = 'comments'
     return render_template('comments.html',comment = comm,title = title)
 
-@main.route('/new_comment/<int:pitches_id>', methods = ['GET', 'POST'])
+@main.route('/new_comment/<int:blogs_id>', methods = ['GET', 'POST'])
 @login_required
-def new_comment(blogs_id):
+def new_comment( blogs_id):
+    
     blogs = Blogs.query.filter_by(id = blogs_id).first()
     form = CommentForm()
 
     if form.validate_on_submit():
         comment = form.comment.data
 
-        new_comment = Comments(comment=comment,user_id=current_user.id, pitches_id=pitches_id)
+        new_comment = Comments(comment=comment,user_id=current_user.id, blogs_id=blogs_id)
 
         new_comment.save_comment()
 
-        return redirect(url_for('main.index'))
+        return redirect(url_for('main.category'))
     title='New Blog'
     return render_template('new_comment.html',title=title,comment_form = form,blogs_id=blogs_id)
+
+
+@main.route('/delete/<int:id>', methods=['GET', 'POST'])
+@login_required
+def deleteComment(id):
+    comment =Comments.query.get_or_404(id)
+    db.session.delete(comment)
+    db.session.commit()
+    flash('comment succesfully deleted')
+    return redirect (url_for('main.index'))
+
+
+@main.route('/deleteblog/<int:id>', methods=['GET', 'POST'])
+@login_required
+def deleteBlog(id):
+    blog = Blogs.query.get_or_404(id)
+    db.session.delete(blog)
+    db.session.commit()
+    return redirect(url_for('main.index'))

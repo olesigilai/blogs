@@ -19,12 +19,16 @@ class Blogs(db.Model):
     category = db.Column(db.String(255))
     blog = db.Column(db.String(255))
     date = db.Column(db.DateTime(250), default=datetime.utcnow)
-    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id",ondelete='CASCADE'), nullable=False)
     comments = db.relationship('Comments', backref='title', lazy='dynamic')
 
     def save_blog(self):
         db.session.add(self)
         db.session.commit()
+
+    def deleteblog(self):
+        db.session.delete(self)
+        db.session.commit() 
 
     @classmethod
     def get_blogs(cls):
@@ -106,3 +110,13 @@ class Comments(db.Model):
 
     def __repr__(self):
         return f"Comments('{self.comment}', '{self.date_posted}')"
+
+class Subscriber(db.Model):
+    __tablename__ = 'subscriber'
+
+    id = db.Column(db.Integer,primary_key = True)
+    username = db.Column(db.String(255))
+    email = db.Column(db.String(255),unique = True,index = True)
+
+    def __repr__(self):
+        return f'Subscriber {self.username}'

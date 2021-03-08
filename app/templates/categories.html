@@ -6,7 +6,7 @@
 
 {% block content %}
 <body>  
-  <div class="container">
+  <div class="container" style="background-image: url('../static/photos/photo-1542664408056-8ec64f24de47.jpeg'); background-size: cover">
   <br> <hr>   
   <h3 class="text-center">BLOG COMMENTS</h3>
   
@@ -14,10 +14,10 @@
       <div class="col-md-4"></div>
 
       <div class="col-md-4" > 
-        <div class="card-columns" >
+        <div class="card-columns">
           {% for category in category[::-1] %}
 
-          <div class="card bg-transparent border-success" style="text-align: center;" >
+          <div class="card bg-transparent border-success">
             <div class="card-header bg-transparent border-success">
               {{category.title}}
             </div>
@@ -29,6 +29,7 @@
             <div class="card-footer bg-transparent border-success">
                 <button type="button" class="btn btn-outline-success btn-sm"  ><a href="/new_comment/{{category.id}}">Comment</a></button> 
                 <button type="button" class="btn btn-outline-success btn-sm" ><a href="/comments/{{category.id}}">View comments</a></button>
+                <button><a href="{{url_for('main.deleteBlog', id = category.id)}}">Delete Blog</a></button>
               </div>
               <hr> <br>
             </div>
@@ -36,23 +37,11 @@
         </div>
         
         <div class="col-md-4" style="text-align: center;">
-          <script>
-var like = 0;
 
-          <button class="social-like" >
-            <span class="like"><i class="glyphicon glyphicon-thumbs-up"></i></span>
-            <span class="count" >0</span>
-        </button>
-           &nbsp;
-        <button class="social-dislike" >
-            <span class="dislike" >0</span>
-            <span class="like"><i class="glyphicon glyphicon-thumbs-down"></i></span>
-       </button>
-      </script>
-        </div>
   
       {% endfor %}
       </div>
     </div>
+  </div>
   </body>    
       {% endblock %}

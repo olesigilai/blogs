@@ -3,34 +3,39 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   </head>
   <link rel="stylesheet" href="../static/css/index.css">
   
   <body>
-    <div class="navbar navbar-inverse" role="navigation">
+    <div class="navbar " role="navigation" style="color: white;">
         <div class="container-fluid">
-            <div class="navbar-header">
+            <div class="navbar-brand">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                   <span class="sr-only">Toggle navigation</span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                   <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"> VIBRANT BLOGS </a>
-            </div>
+                    </div>
+                    
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-                  <li><a href="/">Home</a></li>
+                  <li style="font-size: 18px"><a href="/"><i class="fa fa-fw fa-home"></i>Home</a></li>
                   <ul class="nav navbar-nav navbar-right">
                       {% if current_user.is_authenticated %}
-                      <li><a href="{{url_for('main.profile',uname=current_user.author)}}">Profile</a></li>
-                      <li><a href="/">Welcome {{(current_user.author)}}</a></li>
-                      <li><a href="{{url_for('auth.logout')}}">Sign out</a></li>
+                      <li style="font-size: 18px" ><a href="{{url_for('main.profile',uname=current_user.author)}}"><i class="fa fa-fw fa-user"></i>Profile</a></li>
+                      <li style="font-size: 18px"><a href="/">Welcome {{(current_user.author)}}</a></li>
+                      <li style="font-size: 18px"><a href="{{url_for('auth.logout')}}" >Sign out</a></li>
+                      <li style="font-size: 18px"><a href="/Subscribe">Subscribe</a></li>
                       {% else %}
-                      <li><a href="{{url_for('auth.login')}}">Sign in</a></li>
+                      <li style="font-size: 18px"><a href="{{url_for('auth.login')}}">Sign in</a></li>
+
                       {%endif%}
                     </ul>
           </div>
+          <h1 style="text-align:center ;font-family: 'Merienda', cursive;" >VIBRANT BLOGS </h1>
        </div>
    </div>
 </body>

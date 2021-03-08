@@ -1,10 +1,10 @@
 from flask_login import login_required, current_user
 from flask import render_template,request,redirect,url_for, abort,flash
-from ..models import Blogs,Role,User,Comments
+from ..models import Blogs,Role,User,Comments,Subscriber
 from .. import db,photos
 from . import main
 from ..email import mail_message
-from .forms import BlogsForm,CommentForm,UpdateProfile
+from .forms import BlogsForm,CommentForm,UpdateProfile,SubscriberForm
 from ..requests import getQuotes
 
 @main.route('/blog/', methods = ['GET','POST'])
@@ -113,9 +113,7 @@ def new_comment( blogs_id):
 
     if form.validate_on_submit():
         comment = form.comment.data
-
         new_comment = Comments(comment=comment,user_id=current_user.id, blogs_id=blogs_id)
-
         new_comment.save_comment()
 
         return redirect(url_for('main.category'))
@@ -129,7 +127,7 @@ def deleteComment(id):
     comment =Comments.query.get_or_404(id)
     db.session.delete(comment)
     db.session.commit()
-    flash('comment succesfully deleted')
+    # flash('comment succesfully deleted')
     return redirect (url_for('main.index'))
 
 
@@ -140,3 +138,17 @@ def deleteBlog(id):
     db.session.delete(blog)
     db.session.commit()
     return redirect(url_for('main.index'))
+
+@main.route('/Subscribe',methods=['GET','POST'])
+def subBlog():
+    
+    form = SubscriberForm()
+    if form.validate_on_submit():
+        subs = Subscriber(email = form.email.data, username = form.username.data)    
+        db.session.add(subs)
+        db.session.commit()
+
+
+        mail_message("You have successfully subscribed to Blog website,Thank for joining us", "email/welcome_subs", subs.email,subs=subs)
+    
+    return render_template('subscribe.html',subscribe_form=form)
